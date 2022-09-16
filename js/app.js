@@ -1,8 +1,9 @@
 const loadPhones = async (searchText, dataLimit) => {
+  toggleSpinner(true);
   const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`;
   const res = await fetch(url);
   const data = await res.json();
-  toggleSpinner(false);
+
   displayPhones(data.data, dataLimit);
 };
 
@@ -19,12 +20,17 @@ const displayPhones = (phones, dataLimit) => {
 
   // display no phones found
   const noPhone = document.getElementById("no-found-message");
+  const show_all_btn = document.getElementById("show-all");
+
   if (phones.length === 0) {
     noPhone.classList.remove("d-none");
+    show_all_btn.classList.add("d-none");
   } else {
     noPhone.classList.add("d-none");
+    show_all_btn.classList.remove("d-none");
   }
   const phonesContainer = document.getElementById("phones-container");
+  phonesContainer.innerHTML = ``;
 
   // display all phones
   phones.forEach((phone) => {
@@ -94,7 +100,7 @@ const displayPhoneDetails = (phone) => {
   console.log(phone);
   const modalTitle = document.getElementById("phoneDetailModalLabel");
   modalTitle.innerText = phone.name;
-console.log(modalTitle.innerText)
+  console.log(phone.name);
   const phoneDetails = document.getElementById("phone-details");
   console.log(phone.mainFeatures.sensors[0]);
   phoneDetails.innerHTML = `
